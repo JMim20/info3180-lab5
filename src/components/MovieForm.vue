@@ -1,0 +1,51 @@
+
+
+<template>
+    <form @submit.prevent="saveMovie" method="post" class="form_movie" >
+
+        <div class="form-group mb-3">
+            <label for="title" class="form-label">Movie Title</label>
+            <input type="text" name="title" class="form-control" placeholder="Movie Title here..." />
+        </div>
+        <div class="form-group mb-3">
+            <label for="description" class="form-label">Movie Description</label>
+            <input type="text" name="description" class="form-control" placeholder="Movie Description here..." />
+        </div>
+        <div class="form-group mb-3">
+            <label for="poster" class="form-label">Movie Poster</label>
+            <input type="file" name="poster" class="form-control" />
+        </div>
+        <button class="btn btn-primary" type="submit">Add</button>
+
+    </form>
+
+</template>
+
+
+<script setup>
+
+    import { ref } from 'vue';
+
+    const saveMovie=() => {
+
+        const mform =document.getElementsByClassName("form_movie");
+        let formData = new FormData(mform);
+    
+        fetch("/api/v1/movies", {
+            method: 'POST',
+            body: formData,
+        })
+        .then(function (response) {
+        return response.json();
+        })
+        .then(function (data) {
+        // display a success message
+        console.log(data);
+        })
+        .catch(function (error) {
+        console.log(error);
+        });
+
+}
+
+</script>
