@@ -1,7 +1,7 @@
 
 
 <template>
-    <form @submit.prevent="saveMovie" method="post" class="form_movie" >
+    <form @submit.prevent="saveMovie" method="post" id="movieForm" >
 
         <div class="form-group mb-3">
             <label for="title" class="form-label">Movie Title</label>
@@ -24,16 +24,20 @@
 
 <script setup>
 
-    import { ref } from 'vue';
+    import { ref, onMounted } from 'vue';
+    let csrf_token = ref("");
 
     const saveMovie=() => {
 
-        const mform =document.getElementsByClassName("form_movie");
-        let formData = new FormData(mform);
+        let movieForm = document.getElementById('movieForm');
+        let form_data = new FormData(movieForm);
     
         fetch("/api/v1/movies", {
             method: 'POST',
-            body: formData,
+            body: form_data,
+            headers: {
+            'X-CSRFToken': csrf_token.value
+            }
         })
         .then(function (response) {
         return response.json();
@@ -46,6 +50,19 @@
         console.log(error);
         });
 
-}
+    }
+    function getCsrfToken() {
+        fetch('/api/v1/csrf-token')
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+            csrf_token.value = data.csrf_token;
+        })
+    }
+
+    onMounted(() => {
+        getCsrfToken();
+    });
+
 
 </script>

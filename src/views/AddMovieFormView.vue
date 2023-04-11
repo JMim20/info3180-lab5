@@ -1,8 +1,8 @@
 <script>
-    import MovieForm from '@/components/MovieForm.vue';
+    import mform from '@/components/MovieForm.vue';
 </script>
 
 <template>
-   <MovieForm/>
+   <mform/>
 </template>
 
