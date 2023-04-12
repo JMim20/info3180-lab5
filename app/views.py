@@ -6,7 +6,7 @@ This file creates your application.
 """
 
 from app import app,db
-from flask import render_template, request, jsonify, send_file
+from flask import render_template, request, jsonify, send_file, send_from_directory
 import os
 from app.models import Movie
 from werkzeug.utils import secure_filename
@@ -38,7 +38,7 @@ def movies():
             filename= secure_filename(poster.filename)
             poster.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-            movie= Movie(title, description, poster)
+            movie= Movie(title, description, filename)
             db.session.add(movie)
             db.session.commit()
 
@@ -55,6 +55,26 @@ def movies():
 @app.route('/api/v1/csrf-token', methods=['GET'])
 def get_csrf():
  return jsonify({'csrf_token': generate_csrf()})
+
+@app.route("/api/v1/movies", methods=['GET'])
+def getMovies():
+    if request.method == 'GET':
+        addedMovies=Movie.query.all()
+        list_movies =[]
+        for aMovie in addedMovies:
+            movies={
+                "id": aMovie.id,
+                "title": aMovie.title,
+                "description": aMovie.description,
+                "poster": "/api/v1/posters/"+ aMovie.poster
+            }
+            list_movies.append(movies)
+        return jsonify({'Addedmovies':list_movies})
+
+     
+@app.route('/api/v1/posters/<filename>')
+def get_posterImg(filename):
+    return send_from_directory(os.path.join(os.getcwd(), app.config['UPLOAD_FOLDER']), filename)          
            
 ###
 # The functions below should be applicable to all Flask apps.
