@@ -2,7 +2,7 @@
 
 <template>
     <form @submit.prevent="saveMovie" method="post" id="movieForm" class="row g-3" >
-
+        <h1>Upload Movie Form</h1>
         <div class="alert alert-danger" v-if="errorM">
             <ul>
                 <li v-for="aError in errorM" v-bind:key="aError.id" >
