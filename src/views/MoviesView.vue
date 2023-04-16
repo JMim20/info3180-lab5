@@ -3,8 +3,8 @@
         <h1>Movies</h1>
         <div class="movie-cards">
             <div v-for="movie in movies" :key="movie.id" class="movie-card">
-                <img :src="movie.poster" alt="Movie poster" />
-                <h2>{{ movie.title }}</h2>
+                <img :src="movie.poster" alt="movie.title" />
+                <h5>{{ movie.title }}</h5>
                 <p>{{ movie.description }}</p>
             </div>
         </div>
@@ -27,7 +27,7 @@ const fetchMovies= () =>{
     .then(function (data) {
     // display a success message
     console.log(data);
-    movies.value=data;
+    movies.value=data.Addedmovies;
     })
     .catch(function (error) {
     console.log(error);
