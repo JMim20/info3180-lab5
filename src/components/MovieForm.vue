@@ -1,8 +1,18 @@
 
 
 <template>
-    <form @submit.prevent="saveMovie" method="post" id="movieForm" >
+    <form @submit.prevent="saveMovie" method="post" id="movieForm" class="row g-3" >
 
+        <div class="alert alert-danger" v-if="errorM">
+            <ul>
+                <li v-for="aError in errorM" v-bind:key="aError.id" >
+                    {{ aError }}
+                </li>
+            </ul>
+        </div>
+        <div class="alert alert-success" v-if="successM">
+            {{successM}}
+        </div>
         <div class="form-group mb-3">
             <label for="title" class="form-label">Movie Title</label>
             <input type="text" name="title" class="form-control" placeholder="Movie Title here..." />
@@ -15,8 +25,9 @@
             <label for="poster" class="form-label">Movie Poster</label>
             <input type="file" name="poster" class="form-control" />
         </div>
-        <button class="btn btn-primary" type="submit">Add</button>
-
+        <div class="col-12">
+            <button class="btn btn-primary" type="submit">Add Movie</button>
+        </div>
     </form>
 
 </template>
@@ -26,6 +37,8 @@
 
     import { ref, onMounted } from 'vue';
     let csrf_token = ref("");
+    let successM = ref("");
+    let errorM =ref("");
 
     const saveMovie=() => {
 
@@ -44,7 +57,16 @@
         })
         .then(function (data) {
         // display a success message
-        console.log(data);
+        if("message" in data){
+            console.log(data);
+            successM.value =data.message
+            clearForm();
+
+        }else if ("errors" in data){
+            console.log(data);
+            errorM.value=data.errors
+        }
+        
         })
         .catch(function (error) {
         console.log(error);
@@ -66,3 +88,15 @@
 
 
 </script>
+
+<style scoped>
+
+.form-label{
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight:500;
+}
+
+.form-control{
+    border: 2px solid rgb(19, 19, 135)
+}
+</style>

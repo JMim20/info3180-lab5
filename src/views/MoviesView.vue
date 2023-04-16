@@ -1,5 +1,27 @@
 <template> 
-    <div class="movies">
+  <div class="container">
+    <h1>Movies</h1>
+    <div class="row g-5 justify-content-evenly">
+      <div v-for="movie in movies" :key="movie.id" class="col-6">
+        <div class="card " >
+          <div class="row g-0">
+            <div class="col-6 col-md-5">
+              <img :src="movie.poster" alt="movie.title"  class="card-img img-fluid"/>
+            </div>
+            <div class="col-6  col-md-7">
+              <div class="card-body d-flex flex-column">
+                <div class="h-100">
+                  <h5 class="card-title">{{ movie.title }}</h5>
+                  <p class="card-text">{{ movie.description }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    <!-- <div class="movies">
         <h1>Movies</h1>
         <div class="movie-cards">
             <div v-for="movie in movies" :key="movie.id" class="movie-card">
@@ -8,7 +30,7 @@
                 <p>{{ movie.description }}</p>
             </div>
         </div>
-    </div>
+    </div> -->
 </template>
 
 
@@ -40,7 +62,20 @@ onMounted(fetchMovies);
 </script>
 
 <style scoped>
-.movies {
+
+.card-img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+.card{
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* .movies {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -66,7 +101,7 @@ onMounted(fetchMovies);
   max-width: 100%;
   height: auto;
   margin-bottom: 10px;
-}
+} */
 </style>
 
 
